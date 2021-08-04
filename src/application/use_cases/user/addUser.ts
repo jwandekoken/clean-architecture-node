@@ -1,10 +1,6 @@
-import { IUser } from "../../../entities/User";
-import { IUserRepository } from "../../contracts/UserRepository";
+import { IAddUser } from "./interfaces";
 
-const addUser = async (
-  UserRepository: IUserRepository,
-  { name, email, password }: IUser
-) => {
+const addUser: IAddUser = async (UserRepository, { name, email, password }) => {
   // validate
   if (!name || !email || !password) {
     throw new Error("validation failed");
@@ -14,24 +10,16 @@ const addUser = async (
 
   // create new student object
 
-  let createdUser;
   try {
-    createdUser = await UserRepository.add({
+    return await UserRepository.add({
       name,
       email,
       password,
     });
-  } catch (error) {
-    console.log("error: ", error);
+  } catch (err) {
+    const error = new Error(err.message || "Unknown error creating user");
+    throw error;
   }
-
-  if (!createdUser) {
-    return {
-      error: "could not create user",
-    };
-  }
-
-  return createdUser;
 };
 
 export { addUser };

@@ -3,18 +3,14 @@ import { IUser } from "../../../../entities/User";
 import { User } from "../models/UserModel";
 
 const UserRepository: IUserRepository = {
-  add: (user) => {
+  add: async (user) => {
     const newUser = new User(user);
-
-    return newUser
-      .save()
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => {
-        console.log(err);
-        return err;
-      });
+    try {
+      return await newUser.save();
+    } catch (err) {
+      const error = new Error(err.message || "Unknown error creating user");
+      throw error;
+    }
   },
 };
 

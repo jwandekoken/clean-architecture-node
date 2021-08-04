@@ -4,6 +4,7 @@ const InitMongoDBService = (connString: string) => {
   return mongoose.connect(connString, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useCreateIndex: true,
   });
 };
 
