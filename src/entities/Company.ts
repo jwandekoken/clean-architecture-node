@@ -1,4 +1,4 @@
-export interface CompanyProps {
+export interface ICompany {
   id: string;
   name: string;
 }

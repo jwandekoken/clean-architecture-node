@@ -1,4 +1,4 @@
-export interface UnitProps {
+export interface IUnit {
   id: string;
   name: string;
   companyRef: string;

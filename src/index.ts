@@ -1,42 +1,60 @@
 import express from "express";
 import type { ErrorRequestHandler } from "express";
 import { projectDependencies } from "./config/projectDependencies";
-//
-import { UserRepository } from "./frameworks/persistance/mongo/repositories/userRepository";
-import { addUser } from "./application/use_cases/user/addUser";
+// routes
+import { apiRouter } from "./frameworks/web/routes";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 projectDependencies.DatabaseService.init("mongodb://localhost:27017/test")
   .then(() => {
-    app.get("/", (req, res) => {
-      res.send("Hello World - here an Express project with TS");
-    });
+    // Handle Cors
+    app.use((req, res, next) => {
+      const allowedOrigins = ["http://localhost:3000"];
+      const origin = req.headers.origin;
 
-    app.post("/user", async (req, res, next) => {
-      let createdUser;
-      try {
-        createdUser = await addUser(UserRepository, {
-          name: "Julio",
-          email: "email@email.com",
-          password: "123",
-        });
-      } catch (error) {
-        console.log("### entrou aqui");
-        return next(error);
+      if (origin) {
+        if (allowedOrigins.indexOf(origin) > -1) {
+          res.setHeader("Access-Control-Allow-Origin", origin);
+        }
+
+        res.setHeader(
+          "Access-Control-Allow-Methods",
+          "OPTIONS, GET, POST, PUT, PATCH, DELETE"
+        );
+        res.setHeader(
+          "Access-Control-Allow-Headers",
+          "Origin, X-Requested-With, Content-Type, Authorization, Accept, Referer, User-Agent, sec-ch-ua, sec-ch-ua-mobile"
+        );
       }
 
-      console.log("createdUser: ", createdUser);
+      next();
+    });
 
-      return res.json({
-        user: createdUser,
+    // middlewares
+    app.use(express.json());
+
+    // Routes
+    app.get("/", (req, res) => {
+      res.json({
+        message: "You should use /api/v1/:resource",
       });
     });
 
+    app.use("/api/v1", apiRouter());
+
     const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-      console.log("err from errorHandler: ", err);
-      res.status(500).send("Something broke!");
+      console.log("Error from errorHandler: ", err);
+
+      const statusCode = err.statusCode || 500;
+
+      res.status(statusCode).json({
+        error: {
+          statusCode: statusCode,
+          message: err.message || "Sorry, unkown error",
+        },
+      });
     };
     app.use(errorHandler);
 

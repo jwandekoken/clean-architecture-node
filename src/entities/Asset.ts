@@ -1,6 +1,6 @@
 export type Status = "Running" | "Alerting" | "Stopped";
 
-export interface AssetProps {
+export interface IAsset {
   id: string;
   imageUrl: string;
   name: string;

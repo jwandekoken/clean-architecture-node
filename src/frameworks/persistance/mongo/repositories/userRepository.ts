@@ -1,5 +1,4 @@
-import { IUserRepository } from "../../../../application/contracts/UserRepository";
-import { IUser } from "../../../../entities/User";
+import { IUserRepository } from "../../../../application/contracts/UserRepositoryContract";
 import { User } from "../models/UserModel";
 
 const UserRepository: IUserRepository = {
