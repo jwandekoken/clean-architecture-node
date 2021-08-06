@@ -15,10 +15,10 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
     },
-    // companyRef: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "Company",
-    // },
+    companyRef: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Company",
+    },
   },
   {
     timestamps: true,

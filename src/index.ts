@@ -7,7 +7,9 @@ import { apiRouter } from "./frameworks/web/routes";
 const app = express();
 const port = process.env.PORT || 3000;
 
-projectDependencies.DatabaseService.init("mongodb://localhost:27017/test")
+projectDependencies.DatabaseService.init(
+  "mongodb://localhost:27017/unitmanager"
+)
   .then(() => {
     // Handle Cors
     app.use((req, res, next) => {
@@ -38,11 +40,11 @@ projectDependencies.DatabaseService.init("mongodb://localhost:27017/test")
     // Routes
     app.get("/", (req, res) => {
       res.json({
-        message: "You should use /api/v1/:resource",
+        message: "You should use /api/1.0/:resource",
       });
     });
 
-    app.use("/api/v1", apiRouter());
+    app.use("/api/1.0", apiRouter());
 
     const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
       console.log("Error from errorHandler: ", err);

@@ -5,3 +5,8 @@ export type IAddUser = (
   userRepository: IUserRepository,
   userData: IUser
 ) => Promise<IUser>;
+
+export type IGetUser = (
+  userRepository: IUserRepository,
+  userId: string
+) => Promise<IUser>;

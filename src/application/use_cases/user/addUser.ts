@@ -1,7 +1,10 @@
 import { IAddUser } from "./interfaces";
 import { HttpError } from "../utils";
 
-const addUser: IAddUser = async (UserRepository, { name, email, password }) => {
+const addUser: IAddUser = async (
+  UserRepository,
+  { name, email, password, companyRef }
+) => {
   // validate
   if (!name || !email || !password) {
     throw new HttpError("validation failed", 400);
