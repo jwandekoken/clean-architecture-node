@@ -6,8 +6,6 @@ import type { ErrorRequestHandler } from "express";
 import { projectDependencies } from "./config/projectDependencies";
 import { apiRouter } from "./frameworks/web/routes";
 
-console.log("process.env.TEST: ", process.env.TEST);
-
 const app = express();
 const port = process.env.PORT || 3000;
 
