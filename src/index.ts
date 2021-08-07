@@ -1,8 +1,12 @@
+import * as dotenv from "dotenv";
+dotenv.config({ path: __dirname + "/../.env" });
+
 import express from "express";
 import type { ErrorRequestHandler } from "express";
 import { projectDependencies } from "./config/projectDependencies";
-// routes
 import { apiRouter } from "./frameworks/web/routes";
+
+console.log("process.env.TEST: ", process.env.TEST);
 
 const app = express();
 const port = process.env.PORT || 3000;
