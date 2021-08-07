@@ -5,7 +5,6 @@ const addUser: IAddUser = async (
   UserRepository,
   { name, email, password, companyRef }
 ) => {
-  // validate
   if (!name || !email || !password) {
     throw new HttpError("validation failed", 400);
   }

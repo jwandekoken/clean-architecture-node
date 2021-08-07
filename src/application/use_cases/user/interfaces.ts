@@ -10,3 +10,8 @@ export type IGetUser = (
   userRepository: IUserRepository,
   userId: string
 ) => Promise<IUser>;
+
+export type IUpdateUser = (
+  userRepository: IUserRepository,
+  userData: IUser
+) => Promise<IUser>;
