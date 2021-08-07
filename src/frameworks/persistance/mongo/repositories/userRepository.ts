@@ -61,6 +61,22 @@ const UserRepository: IUserRepository = {
 
     return updatedUser;
   },
+  delete: async (_id) => {
+    let deletedUser;
+    try {
+      deletedUser = await User.findOneAndDelete({ _id });
+    } catch (err) {
+      const error = new Error(err.message || "Could not delete user");
+      throw error;
+    }
+
+    if (!deletedUser) {
+      const error = new Error("Could not delete user");
+      throw error;
+    }
+
+    return deletedUser;
+  },
 };
 
 export { UserRepository };

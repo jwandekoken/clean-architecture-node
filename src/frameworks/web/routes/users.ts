@@ -3,6 +3,7 @@ import { UserRepository } from "../../../frameworks/persistance/mongo/repositori
 import { addUser } from "../../../application/use_cases/user/addUser";
 import { getUser } from "../../../application/use_cases/user/getUser";
 import { updateUser } from "../../../application/use_cases/user/updateUser";
+import { deleteUser } from "../../../application/use_cases/user/deleteUser";
 
 const usersRoutes = express.Router();
 
@@ -43,7 +44,7 @@ usersRoutes.post("/", async (req, res, next) => {
   });
 });
 
-// Update user user
+// Update user
 usersRoutes.put("/", async (req, res, next) => {
   const { _id, name, email, password, companyRef } = req.body;
 
@@ -62,6 +63,22 @@ usersRoutes.put("/", async (req, res, next) => {
 
   return res.json({
     user: updatedUser,
+  });
+});
+
+// Delete user
+usersRoutes.delete("/:id", async (req, res, next) => {
+  const userId = req.params.id;
+
+  let deletedUser;
+  try {
+    deletedUser = await deleteUser(UserRepository, userId);
+  } catch (error) {
+    return next(error);
+  }
+
+  return res.json({
+    deletedUser,
   });
 });
 

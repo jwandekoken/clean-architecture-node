@@ -15,3 +15,8 @@ export type IUpdateUser = (
   userRepository: IUserRepository,
   userData: IUser
 ) => Promise<IUser>;
+
+export type IDeleteUser = (
+  userRepository: IUserRepository,
+  _id: string
+) => Promise<IUser>;
