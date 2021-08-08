@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { UserRepository } from "../../persistance/mongo/repositories/userRepository";
+import { HttpError } from "../../../application/use_cases/utils";
 import { addUser } from "../../../application/use_cases/user/addUser";
 import { getUser } from "../../../application/use_cases/user/getUser";
 import { updateUser } from "../../../application/use_cases/user/updateUser";
@@ -41,6 +42,12 @@ const userController = {
   },
   update: async (req: Request, res: Response, next: NextFunction) => {
     const { _id, name, email, password, companyRef } = req.body;
+
+    // validate if user is allowed
+    if (req.user._id !== _id) {
+      const error = new HttpError("Access denied", 401);
+      return next(error);
+    }
 
     let updatedUser;
     try {

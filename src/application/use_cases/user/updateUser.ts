@@ -1,5 +1,5 @@
 import { IUpdateUser } from "./interfaces";
-import { HttpError } from "../utils";
+import { HttpError, hashStr } from "../utils";
 
 const updateUser: IUpdateUser = async (
   UserRepository,
@@ -9,14 +9,16 @@ const updateUser: IUpdateUser = async (
     throw new HttpError("validation failed", 400);
   }
 
-  // validate new fields
+  const hashedPassword = hashStr(password);
+
+  // @TODO: validate fields
 
   try {
     return await UserRepository.update({
       _id,
       name,
       email,
-      password,
+      password: hashedPassword,
       companyRef,
     });
   } catch (err) {

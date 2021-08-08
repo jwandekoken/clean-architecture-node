@@ -4,6 +4,7 @@ dotenv.config({ path: __dirname + "/../.env" });
 import express from "express";
 import type { ErrorRequestHandler } from "express";
 import { projectDependencies } from "./config/projectDependencies";
+import { enableCors } from "./frameworks/web/middlewares/enableCors";
 import { apiRouter } from "./frameworks/web/routes";
 
 const app = express();
@@ -13,30 +14,8 @@ projectDependencies.DatabaseService.init(
   "mongodb://localhost:27017/unitmanager"
 )
   .then(() => {
-    // Handle Cors
-    app.use((req, res, next) => {
-      const allowedOrigins = ["http://localhost:3000"];
-      const origin = req.headers.origin;
-
-      if (origin) {
-        if (allowedOrigins.indexOf(origin) > -1) {
-          res.setHeader("Access-Control-Allow-Origin", origin);
-        }
-
-        res.setHeader(
-          "Access-Control-Allow-Methods",
-          "OPTIONS, GET, POST, PUT, PATCH, DELETE"
-        );
-        res.setHeader(
-          "Access-Control-Allow-Headers",
-          "Origin, X-Requested-With, Content-Type, Authorization, Accept, Referer, User-Agent, sec-ch-ua, sec-ch-ua-mobile"
-        );
-      }
-
-      next();
-    });
-
     // middlewares
+    app.use(enableCors);
     app.use(express.json());
 
     // Routes

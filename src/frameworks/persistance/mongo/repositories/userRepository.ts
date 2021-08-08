@@ -18,6 +18,22 @@ const UserRepository: IUserRepository = {
 
     return user;
   },
+  getByEmail: async (userEmail) => {
+    let user;
+    try {
+      user = await User.findOne({ email: userEmail });
+    } catch (err) {
+      const error = new Error(err.message || "Could not find user");
+      throw error;
+    }
+
+    if (!user) {
+      const error = new Error("Could not find user");
+      throw error;
+    }
+
+    return user;
+  },
   add: async (user) => {
     const newUser = new User(user);
     try {
